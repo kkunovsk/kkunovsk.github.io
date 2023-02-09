@@ -2063,6 +2063,7 @@ input, select, textarea {
 		height: 24em;
 		background: url("../../images/banner.jpg") center center;
 		background-size: cover;
+		opacity: 1;
 		padding: 0;
 	}
 
@@ -2104,7 +2105,7 @@ input, select, textarea {
 			margin: 1.25em 0 0 0;
 			display: block;
 			letter-spacing: 0.2em;
-			font-size: 0.9em;
+			font-size: 1em;
 		}
 
 /* Nav */
@@ -2141,7 +2142,7 @@ input, select, textarea {
 					color: rgba(255, 255, 255, 0.75);
 					text-transform: uppercase;
 					text-decoration: none;
-					font-size: 0.7em;
+					font-size: 0.8em;
 					letter-spacing: 0.25em;
 					height: 5em;
 					line-height: 5em;
@@ -2191,7 +2192,7 @@ input, select, textarea {
 			color: rgba(255, 255, 255, 0.75);
 			text-transform: uppercase;
 			text-decoration: none;
-			font-size: 0.7em;
+			font-size: 0.8em;
 			letter-spacing: 0.25em;
 			border-top: solid 1px rgba(255, 255, 255, 0.15);
 			line-height: 3em;
@@ -2226,7 +2227,7 @@ input, select, textarea {
 			color: #fff;
 			border-radius: 0.35em;
 			box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.25);
-			font-size: 2.75em;
+			font-size: 2.2em;
 			letter-spacing: 0.075em;
 			line-height: 1.35em;
 			padding: 1em 0 1em 0;
@@ -2362,11 +2363,19 @@ input, select, textarea {
 		}
 
 			#footer .feature-list section {
-				border-top-color: rgba(255, 255, 255, 0.05);
+				border-top: none;
 			}
 
 			#footer .feature-list h3:before {
 				background: #3d4249 url("images/overlay.png");
+			}
+
+			#footer a {
+				text-decoration: none;
+			}
+
+			#footer a:hover {
+				text-decoration: underline;
 			}
 
 /* Copyright */
