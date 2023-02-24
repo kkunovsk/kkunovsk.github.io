@@ -27,6 +27,29 @@
 				margin-left: auto;
 				margin-right: auto;
 			}
+			#myBtn {
+				display: none; /* Hidden by default */
+				position: fixed; /* Fixed/sticky position */
+				bottom: 20px; /* Place the button at the bottom of the page */
+				right: 30px; /* Place the button 30px from the right */
+				z-index: 99; /* Make sure it does not overlap */
+				min-width: 10px;
+				width: 45px;
+				height: 45px;
+				border: none; /* Remove borders */
+				outline: none; /* Remove outline */
+				background-color: #e97770; /* Set a background color */
+				color: white; /* Text color */
+				cursor: pointer; /* Add a mouse pointer on hover */
+				padding: 15px; /* Some padding */
+				border-radius: 10px; /* Rounded corners */
+				font-size: 18px; /* Increase font size */
+				line-height: 0em;
+			}
+
+			#myBtn:hover {
+				background-color: #555; /* Add a dark-grey background on hover */
+			}
 		</style>
 	</head>
 	<body class="no-sidebar is-preload">
@@ -66,8 +89,13 @@
 
 						<!-- Content -->
 							<div id="content" style="font-size:1.1rem;">
+								<button onclick="topFunction()" id="myBtn">🡡</button>
 								<article class="box post">
 									<h1 style="font-size:1.2rem">Week 1</h1>
+									Date: 08/26/2022<br>
+									Total hours: 8<br><br>
+									Description of design efforts:<br>
+									This week, I got familiar with my team: Jehan Shah, Sen Wang, and Manav Bhasin. I also helped brainstorm the various software and hardware components of our project & ways to stay organized as a team throughout the semester.
 								</article>
 								<article class="box post">
 									<h1 style="font-size:1.2rem">Week 2</h1>
@@ -214,6 +242,155 @@
 									Sources Cited<br>
 									[1] https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf<br>
 								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 10</h1>
+									Date: 10/28/2022<br>
+									Total hours: 7<br><br>
+									Description of design efforts:<br>
+									This week, I looked into IMU axis remapping and reacquainted myself with ROS2 for writing nodes.
+									<br><br>
+									<div class="bullet-title">•&emsp;IMU Axis Remapping</div>
+									<div class="bullet-p">Using the BNO055 datasheet [1], I was able to understand how to remap the axes of our IMU. By setting the appropriate bits in the AXIS_MAP_CONFIG register for remapping the y-axis and z-axis, our IMU can output the appropriate results while sitting in a 90o counterclockwise position. Figure 10.1 below uses an image from the datasheet [1] to show the original axes versus the remapping. In addition to adjusting the axes, the y-axis is remapped to the negative z-axis, so I set the proper bit in the AXIS_MAP_SIGN register to account for the negative orientation. Figure 10.2 below is pulled from the datasheet [1] and shows the proper bits and registers to set for remapping.</div>
+									<div class="bullet-img">
+										<img src="images/week10_remap.png" style="max-height: 500px;" />
+										Figure 10.1 – Normal IMU Axis Mapping vs. Remapping
+									</div>
+									<div class="bullet-img">
+										<img src="images/week10_regs.png" style="max-height: 500px;" />
+										Figure 10.2 – IMU Axis Remapping Registers and Bit Shifts
+									</div>
+									<div class="bullet-title">•&emsp;ROS2 Research</div>
+									<div class="bullet-p">I started watching a longer crash course [2] in ROS2 for the particular version we will be using (Humble Hawksbill). The crash course goes in-depth over ROS2 basics, creating packages, creating publisher and subscriber nodes, and creating services and clients. This will lay the foundation for implementing the proper ROS2 Python nodes for our IMU sensor data. Currently, our data is in quaternions, so this built-in quaternion ROS2 message [3] may be useful for setting up our nodes. Jehan suggested that I look into this a little deeper, so I took his advice to familiarize myself with all these concepts before programming.</div>
+									<p>For the following week, I will set up the ROS2 nodes for IMU data and test the IMU calibration and remapping on our prototyping board. This will ensure that the IMU integration is complete along with the postprocessing before incorporating the SLAM library.</p>
+									Sources Cited<br>
+									[1] https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf<br>
+									[2] https://youtu.be/Gg25GfA456o<br>
+									[3] https://github.com/ros2/common_interfaces/blob/humble/geometry_msgs/msg/Quaternion.msg
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 11</h1>
+									Date: 11/04/2022<br>
+									Total hours: 8<br><br>
+									Description of design efforts:<br>
+									This week, I tested the IMU remapping and calibration that I programmed last week. I also began reformatting and collecting additional data from the IMU that will be used in the VSLAM package. In addition, I assisted my teammate with soldering components on our PCB.
+									<br><br>
+									<div class="bullet-title">•&emsp;IMU Axis Remapping & Calibration</div>
+									<div class="bullet-p">Using UART and PuTTY to examine the output data, I was able to test the remapping of our IMU axes. After cross-referencing our IMU’s position with the orientation of the acrylic plates for our project’s packaging, I made the necessary transformations to remap the axes and ensure we have the correct output data. Figure 11.1 below shows the updated remapping of the axes to account for the IMU’s new placement. In addition, I tested the calibration of our IMU by timing the switch from calibration mode to data collection mode, and I performed the figure eight motions with the IMU which were recommended by the Adafruit documentation and video [1]. There was minimal delay in the data collection process since the calibration took about 30 seconds at most. Overall, this will help us collect more accurate data from our IMU to get a better camera pose with our VSLAM package and a more precise reconstruction.</div>
+									<div class="bullet-img">
+										<img src="images/week11_remap.png" style="max-height: 500px;" />
+										Figure 11.1 – Normal IMU Axis Mapping vs. Updated Remapping
+									</div>
+									<div class="bullet-title">•&emsp;Data Collection & Reformatting</div>
+									<div class="bullet-p">For our ROS2 VSLAM package [2], the IMU topic it subscribes to requires orientation, angular velocity, and linear acceleration data. Since we are only collecting and transferring quaternion orientation data at the moment, I have begun reprogramming our IMU data collection to include angular velocity and linear acceleration. In addition, I reformatted the data being sent over UART in order for it to be easily processed and parsed on the Jetson nano. Figure 11.2 below shows the new format for the data being sent over UART as a string. This will make it much more trivial to provide our VSLAM package with the appropriate data in the format it requires.</div>
+									<div class="bullet-img">
+										<img src="images/week11_reformat.png" style="max-height: 500px;" />
+										Figure 11.2 – Reformatting of IMU data
+									</div>
+									<div class="bullet-title">•&emsp;Soldering</div>
+									<div class="bullet-p">Our PCB was finally delivered this week, so I helped Sen with soldering resistors and capacitors. I learned that you can never have too much flux while soldering, and a steady hand and patience help when applying solder to components. Figure 11.3 below shows the components we were able to solder this week. Once we complete the soldering of our PCB, we can run tests to ensure our board operates appropriately before integrating it with our Jetson nano in the packaging.</div>
+									<div class="bullet-img">
+										<img src="images/week11_solder.jpg" style="max-height: 500px;" />
+										Figure 11.3 – PCB with soldered components
+									</div>
+									<p>For the following week, I will continue to reprogram the IMU data collection and parse the data appropriately on the Jetson nano to set it up for our VSLAM package. In addition, I will understand how data can be transferred to the host machine from the Jetson nano since the host machine will run the VSLAM package. This will bring us closer to a better camera pose and a more accurate 3D reconstruction.</p>
+									Sources Cited<br>
+									[1] https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/device-calibration<br>
+									[2] https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_visual_slam<br>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 12</h1>
+									Date: 11/11/2022<br>
+									Total hours: 20<br><br>
+									Description of design efforts:<br>
+									This week, I worked with Jehan to set up our camera, ROS environment, docker container, and camera data collection scripts. In addition, I helped fix the keypad issues on our PCB with a software update.
+									<br><br>
+									<div class="bullet-title">•&emsp;Camera</div>
+									<div class="bullet-p">Using the Arducam documentation [1], I worked with Jehan to set up the camera with the proper driver and dependencies. After installing the IMX477-stereo driver, we noticed an error with the I2C probe and the nano’s communication with our stereo camera. Figure 12.1 below shows this error. Jehan and I went through the documentation for our camera and downloaded all the dependencies we could find. We made sure each hardware connection was making proper contact; however, this error persisted. After running additional tests, we were able to get video and snapshots from both cameras using the gstreamer command-line interface. These results were promising even though the ROS package supplied by the manufacturer did not work, and the issue had to do with this probe error (refer to Figure 12.2). Therefore, we began to write our own ROS2 package using parts of their code to collect camera screenshots and publish images to the appropriate topics. We needed an Ubuntu 22.04 environment to run ROS2 Humble Hawksbill, so we found an NVIDIA docker image that came pre-installed with ROS2 to use for writing and running our nodes on the Jetson nano [2]. After building and mounting our workspace directory to the container, we attempted to build and run ROS2 example tests; however, each time we tried building the packages, the nano froze and gave low memory notifications. Since programming in ROS2 with the container failed to work, we decided to proceed with writing a Python script to retrieve camera snapshots without the ROS2 implementations. This week’s work involved a lot of obstacles and problem-solving, but we are currently on track to get the images and information we need for our VSLAM package and NERF.</div>
+									<div class="bullet-img">
+										<img src="images/week12_i2c_error.png" style="max-height: 600px;" />
+										Figure 12.1 – I2C probe error with camera driver
+									</div>
+									<div class="bullet-img">
+									<img src="images/week12_ros_error_2.png" style="max-height: 600px;" />
+									Figure 12.2 – ROS error with camera package
+									</div>
+									<div class="bullet-title">•&emsp;Keypad</div>
+									<div class="bullet-p">After numerous software and PCB-multimeter tests, we discovered that our keypad needed to be flipped for its appropriate position in our packaging; therefore, I updated the software to swap the column and row pins. In addition, the pull-up resistors on our keypad inputs were improperly set high when they need to be pulled low for our software implementation. Joe and Sen caught this discrepancy, and we were able to run successful tests after unsoldering the pull-up resistors. Figure 12.3 below shows the new keypad orientation being tested with the PCB.</div>
+									<div class="bullet-img">
+										<img src="images/week12_keypad.jpg" style="max-height: 500px;" />
+										Figure 12.3 – Keypad test with PCB
+									</div>
+									<p>For the following week, I will continue to work with Jehan on developing our camera script and making sure we are collecting the required data for our VSLAM package. Our next step is getting a hardware accelerated version of OpenCV on the nano for writing our camera script.</p>
+									Sources Cited<br>
+									[1] https://www.arducam.com/docs/camera-for-jetson-nano/multiple-cameras-on-the-jetson/camarray-arducam-12mp-synchronized-stereo-camera-bundle-kit/<br>
+									[2] https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common/tree/main/docker<br>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 13</h1>
+									Date: 11/18/2022<br>
+									Total hours: 18<br><br>
+									Description of design efforts:<br>
+									This week, I set up the Docker container on the lab nano using the Docker image and scripts Jehan provided. Once the container was set up properly, I wrote the camera publisher node using scripts from ArduCAM’s repo [1] and Jetson Hacks [2].
+									<br><br>
+									<div class="bullet-title">•&emsp;Docker Container</div>
+									<div class="bullet-p">I helped with mounting the workspace and file system that we will use in our Docker container for development in ROS2. The rest of development on the Docker container was done by Jehan who thoroughly researched and wrote a Dockerfile that installs all the necessary dependencies for our project. Once the Dockerfile was finalized, I used Jehan’s instructions and scripts to build the Docker image on our lab nano. This build process took several hours, so I left it over night for installation. Figure 13.1 below shows the successful build of our Docker image. This will be crucial for allowing us to write the ROS2 nodes that will be the framework of our high-level software to achieve a reconstruction. Once I started the Docker container, I ran some tests using example nodes and packages that are pre-installed in ROS2 [3]. Figure 13.2 below shows the successful results of running these nodes. Now, we are able to develop our ROS2 nodes for publishing data to the topics that our VSLAM package needs.</div>
+									<div class="bullet-img">
+										<img src="images/week13_docker_img.jpg" style="max-height: 500px;" />
+										Figure 13.1 – Successful Docker Image Build
+									</div>
+									<div class="bullet-img">
+										<img src="images/week13_nodes.jpg" style="max-height: 500px;" />
+										Figure 13.2 – Example Publisher & Subscriber Nodes Working
+									</div>
+									<div class="bullet-title">•&emsp;Camera Publisher Node</div>
+									<div class="bullet-p">Using ArduCAM’s Camarray_HAT repo [1] and a JetsonHacks script Jehan found to capture images from the camera [2], I wrote the camera publisher node as an organized class using ROS2 primitives. While I did not have the camera in lab to test the script, I worked out the majority of the runtime errors to ensure it works seamlessly when integrated. After extensive research, the one issue I ran into was the availability of the camera_info_manager package for Python. Our VSLAM package is dependent on CameraInfo data for the rectification and intrinsic camera matrices; however, the package that retrieves this data works only with C++ packages. Therefore, we must rewrite our Python publisher node in C++ to utilize this. The implementation of this publisher node is essential for getting a better camera pose with VSLAM for a precise 3D rendering.</div>
+									<p>For the following week, I will start working on our ROS2 IMU publisher node to ensure our VSLAM package receives the appropriate data for an accurate pose and reconstruction. In the meantime, Jehan will take over the camera publisher node revisions and testing.</p>
+									Sources Cited<br>
+									[1] https://github.com/ArduCAM/Camarray_HAT/blob/main/Jetson/ROS/arducam_stereo_camera/src/arducam_stereo_camera.py<br>
+									[2] https://jetsonhacks.com/2019/04/02/jetson-nano-raspberry-pi-camera/<br>
+									[3] https://docs.ros.org/en/humble/Installation/Alternatives/Ubuntu-Development-Setup.html
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 14</h1>
+									Date: 11/25/2022<br>
+									Total hours: 0<br><br>
+									Description of design efforts:<br>
+									THANKSGIVING BREAK
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 15</h1>
+									Date: 12/02/2022<br>
+									Total hours: 9<br><br>
+									Description of design efforts:<br>
+									This week, I wrote and tested a ROS2 camera subscriber node and started working on triggering nano operations with a keypad press.
+									<br><br>
+									<div class="bullet-title">•&emsp;Camera Subscriber Node</div>
+									<div class="bullet-p">In order to get the camera images on the host machine (from the Jetson nano), we decided to upload them to an AWS S3 bucket that the host machine will pull from. Therefore, I wrote a ROS2 subscriber node that converts each ROS2 image message into a .jpeg image and saves it to a directory before Manav’s script uploads them to the bucket. Jehan and I tested both the camera publisher and subscriber nodes that I wrote, and figure 15.1 below shows the success of the images being published and saved to a directory. We had issues trying to run the nodes on separate machines in order to save the images directly to the host machine from the Jetson nano; therefore, we needed the S3 bucket implementation to be an intermediary. As we must supply the NERF software on the host machine with our images for the 3D reconstruction, these nodes are crucial for the operation of our entire device.</div>
+									<div class="bullet-img">
+										<img src="images/week15_sub_node.png" style="max-height: 500px;" />
+										Figure 15.1 – Successful Camera Subscriber Saving Images
+									</div>
+									<div class="bullet-title">•&emsp;Nano ROS2 Trigger</div>
+									<div class="bullet-p">Using the UART interpreter class I created in Python, I can read the UART data sent from our microcontroller over a serial port on our Jetson nano. This allows me to read and interpret the IMU sensor data; however, it also lets me interpret when our unique start and stop bits are being sent for the data collection process. I modified my script to detect when these bits are sent and trigger a command to start the Docker container that runs our ROS2 camera nodes for data collection. I am also adding the stop procedure which safely exits all processes. This feature will be essential for synchronously starting all software operations on the Jetson nano with the embedded hardware.</div>
+									<p>For the following week, I will wrap up my work on starting and stopping the Jetson nano operations with the keypress. Then, I will focus on any final areas that require my attention for overall product integration before our demonstration.</p>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 16</h1>
+									Date: 12/12/2022<br>
+									Total hours: 24<br><br>
+									Description of design efforts:<br>
+									This week, I swapped out the camera, modified scripts to run without ROS and Docker, and helped with script automation.
+									<br><br>
+									<div class="bullet-title">•&emsp;Camera</div>
+									<div class="bullet-p">After putting all the scripts together to capture camera images and upload them to S3, we tested NERF with different object reconstructions. After numerous tests with different featureful subjects, we noticed the reconstruction and images were of much poorer quality compared to the one we did at the beginning of the semester. Therefore, we decided to swap out the stereo camera for the Raspberry Pi Cam v2 in order to capture better quality images for the reconstruction. After installing the new camera, our Jetson nano could not detect it, so I tried troubleshooting with a borrowed nano from the lab. The Pi Cam worked seamlessly with the other Jetson nano; therefore, I believe we had a compatibility issue with the upgraded JetPack version on our Jetson nano. I copied over the scripts and files to the SD card running the older JetPack version and tested it out on our nano. The Pi Cam worked for all tests and collected much higher quality images. In addition, camera image collection was simplified by eliminating ROS and Docker since we will no longer be using VSLAM to determine the camera pose with the IMU data. The camera info necessary for the package was not easily retrieved with ROS, so we cut these parts out altogether. After running additional tests with NERF, we came to the conclusion that a video recording yielded a much clearer reconstruction than the pictures, so we made these changes to the scripts. Figure 16.1 below shows the 3D reconstruction with video. All in all, this week’s work on the camera was essential for producing better reconstructions and having an overall successful project.</div>
+									<div class="bullet-img">
+										<img src="images/week16_reconstruction.jpg" style="max-height: 500px;" />
+										Figure 16.1 – 3D Reconstruction with Video
+									</div>
+									<div class="bullet-title">•&emsp;Script Automation</div>
+									<div class="bullet-p">It took us quite a while to figure out how to run a script in the background for camera capture while the IMU data is still being read on the terminal. Our researching and tests led to using the Python subprocess module. With this, we are able to open a subprocess script and have it seamlessly run in the background. We also ran into issues with the termination of this subprocess, however, and simply using the terminate function would abruptly kill the process in the middle of camera capture (causing data corruption). Therefore, I suggested sending a SIGINT signal which is the same as pressing Ctrl+C in the terminal to exit the process more safely. This change fixed the errors and corruption. Overall, this step was crucial for our project completion as it allows us to register a keypad press over UART and start camera capture at the same time that IMU data is being read in the terminal.</div>
+									<p>For the rest of this week, I will help update the website and prepare for the final presentation. Overall, I had a very valuable experience working on this project and look forward to applying my knowledge and skills to future engineering projects.</p>
+								</article>
 							</div>
 
 					</div>
@@ -269,4 +446,25 @@
 			<script src="assets/js/main.js"></script>
 
 	</body>
+	<script>
+		// Get the button:
+		let mybutton = document.getElementById("myBtn");
+
+		// When the user scrolls down 20px from the top of the document, show the button
+		window.onscroll = function() {scrollFunction()};
+
+		function scrollFunction() {
+			if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+				mybutton.style.display = "block";
+			} else {
+				mybutton.style.display = "none";
+			}
+		}
+
+		// When the user clicks on the button, scroll to the top of the document
+		function topFunction() {
+			document.body.scrollTop = 0; // For Safari
+			document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+		}
+	</script>
 </html>
