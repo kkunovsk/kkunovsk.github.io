@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>KSK | Portfolio - Metaporter Progress Reports</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" type="image/favicon" href="/images/favicon.ico">
+		<style>
+			.bullet-p {
+				padding-left: 24px;
+				margin-bottom: 24px;
+			}
+			.bullet-img {
+				padding-left: 24px;
+				margin-bottom: 28px;
+				font-size: 1rem;
+				text-align: center;
+			}
+			.bullet-img img {
+				display:block;
+				margin-left: auto;
+				margin-right: auto;
+			}
+		</style>
+	</head>
+	<body class="no-sidebar is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<section id="header" class="wrapper">
+
+					<!-- Logo -->
+						<div id="logo">
+							<h1><a href="metaporter.html">Metaporter</a></h1>
+							<p>Progress Reports</p>
+						</div>
+
+					<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li class="current"><a href="index.html">Home</a></li>
+							<li><a href="about-me.html">About Me</a></li>
+							<li>
+								<a href="index.html#projects">Projects</a>
+								<ul>
+									<li><a href="metaporter.html">Metaporter</a></li>
+									<li><a href="mock-reddit.html">Mock Reddit Website</a></li>
+									<li><a href="rogue.html">Rogue</a></li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+
+				</section>
+
+			<!-- Main -->
+				<div id="main" class="wrapper style2">
+					<div class="title">Journals</div>
+					<div class="container">
+
+						<!-- Content -->
+							<div id="content" style="font-size:1.1rem;">
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 1</h1>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 2</h1>
+									Date: 09/02/2022<br>
+									Total hours: 18<br><br>
+									Description of design efforts:<br>
+									This week, I worked on the functional specification, ROS research, setting up the embedded IDE, and configuring our MCU with a UART connection.
+									<br><br>
+									<div class="bullet-title">•&emsp;Functional Specification</div>
+									<div class="bullet-p">For this assignment, I elaborated on the economic and other external constraints for our project. After we decided on the components to include in our final design, we quickly began to see the cost of our product go up if we were to market it commercially. For the purposes of this project, however, we were able to reuse components in the lab and from home as cost-effective solutions. I identified economic constraints with costly components such as the LiDAR, Jetson Xavier NX, and an external NVIDIA GPU-enabled system to view the 3D model.  In addition, I explained how another constraint for our project is the lighting of the subject when recording the images for reconstruction.</div>
+									<div class="bullet-title">•&emsp;ROS Research</div>
+									<div class="bullet-p">I completed my research of utilizing pre-built ROS sensor packages, and I dug deeper by taking notes on how to make our own ROS nodes. This week we decided to make our own nodes for getting the image data from our camera, so my research will prove to be useful in our software implementation. I used the free textbook [1] and YouTube tutorials [2] from ROBOTIS to compile my research. I also shared my notes with the rest of my team to allow for further collaboration.</div>
+									<div class="bullet-title">•&emsp;Set Up Embedded IDE</div>
+									<div class="bullet-p">I researched IDEs that would work best with the STM32F091RCT6 microcontroller from ECE 362 since we decided to use that MCU for our project.  Because the IDE we used in ECE 362 was no longer supported, I decided the STM32CubeIDE would work best for us since it’s most similar and wouldn’t require us to relearn an environment.</div>
+									<div class="bullet-title">•&emsp;UART</div>
+									<div class="bullet-p">I started to configure and program UART on a STM32F091RCT6 MCU to prototype the communication between our microcontroller and Jetson Xavier. I connected the USART5 to a USB-to-serial convertor in order to test the output from the microcontroller. I’ve been using PuTTy to read the data transmitted through the UART connection to my computer for the time being. Once I get this working, I will need to test communication between the MCU and the Jetson Xavier.</div>
+									Sources Cited<br>
+									[1] http://www.robotis.com/service/download.php?no=719<br>
+									[2] https://www.youtube.com/playlist?list=PLRG6WP3c31_U7TFGduEIJWVtkOw6AJjFf<br>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 3</h1>
+									Date: 09/09/2022<br>
+									Total hours: 20<br><br>
+									Description of design efforts:<br>
+									This week, I worked on DMA, USART, and timer research along with configuring our MCU to work with DMA. I also completed our UART connection and debugged it.
+									<br><br>
+									<div class="bullet-title">•&emsp;Research</div>
+									<div class="bullet-p">I used my notes and previous lecture videos from ECE 36200 to better understand direct memory access for the ability to send data through USART without the CPU overhead (for faster MCU processes). I was able to identify the proper registers and start designing a data workflow for collecting data from the LiDAR. After looking into USART (specifically the synchronous functionality), I was able to see that we could not use the synchronous clock with our Jetson nano [1] since it only supports asynchronous transmission and reception. In addition, I looked into basic timers to explore our idea of transmitting data on interrupt every half second. All in all, this research will prove useful for devising the best method to transfer sensor data from our microcontroller to the Jetson nano.</div>
+									<div class="bullet-title">•&emsp;UART</div>
+									<div class="bullet-p">I completed the UART connection to our MCU and debugged it. My test included transmitting characters and strings through a USB-to-serial converter, and the results were observed on my laptop with PuTTY. Afterwards, I reconfigured our UART to work with USART3 instead of USART5 to open those pins for other components. The progress on the UART connection will prove useful for sending and receiving data from our microcontroller in the future.</div>
+									<div class="bullet-img">
+										<img src="images/week3_uart.jpg" style="max-height: 400px;" />
+										Figure 3.1 – UART Setup for Debugging
+									</div>
+									<div class="bullet-title">•&emsp;DMA</div>
+									<div class="bullet-p">I found the proper DMA channel (DMA1_Channel7) to connect to our UART, and I start initializing the registers for our data transfers. Now that the registers are set, I can begin testing and debugging this implementation.</div>
+									<p>For the following week, I will finalize the DMA setup and test the UART communication with this addition. Furthermore, I will set up the timer functionality and test it with the rest of the UART system. Jehan and I will also work together on code reviews of other components and possibly transferring data from the LiDAR to the nano.</p>
+									Sources Cited<br>
+									[1] https://jetsonhacks.com/nvidia-jetson-nano-j41-header-pinout/<br>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 4</h1>
+									Date: 09/16/2022<br>
+									Total hours: 10<br><br>
+									Description of design efforts:<br>
+									This week, I worked on implementing DMA with UART and adding a timer to our UART transmission.
+									<br><br>
+									<div class="bullet-title">•&emsp;DMA</div>
+									<div class="bullet-p">I set up a buffer with characters to send over UART, and I used a serial-to-USB converter to debug the transmission process. With some tweaking of the CCR register, the DMA channel transferred data from memory to the UART transmission register successfully. There was no data loss or lag in transmission. This will be useful for transmitting sensor data from the microcontroller to the Jetson nano over UART. The next step is to decide if we want to transfer from peripheral (sensor) to peripheral (UART) or from memory to peripheral (UART).</div>
+									<div class="bullet-img">
+										<img src="images/week4_dma.png" style="max-height: 400px;" />
+										Figure 4.1 – Test showing DMA memory buffer being transmitted over UART
+									</div>
+									<div class="bullet-title">•&emsp;Timer</div>
+									<div class="bullet-p">I configured timer 7 to interrupt every two seconds, and this will be the foundation for our timed data transmission. Every time this interrupt is triggered, it should enable a DMA transfer from memory to our UART peripheral. Now that the timer is set up, I can begin testing transfers.</div>
+									<p>For the following week, I will finalize the timer setup with DMA and UART to create timed transmissions of data. In addition, I will test and debug this process to ensure there’s no data loss and all components are working properly in conjunction. I will also work with other team members to prototype sending data to the Jetson nano using this new process.</p>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 5</h1>
+									Date: 09/23/2022<br>
+									Total hours: 12<br><br>
+									Description of design efforts:<br>
+									This week, I worked on integrating the embedded software components and testing all the hardware on one breadboard. The only component not included in this process is the IMU since we are still prototyping data collection. In addition, I’m tasked with accepting keypad input on interrupt.
+									<br><br>
+									<div class="bullet-title">•&emsp;Software Integration</div>
+									<div class="bullet-p">After much condensation of the programming, I was able to successfully integrate an organized version of the LCD code that will be used for our project. I made use of the debugger in the STM32CubeIDE to resolve any complications and test all functionality. Afterwards, I attempted to integrate the keypad code; however, after debugging, I came to the conclusion that the keypad initialization wasn’t properly working. I will need to continue to debug and resolve this issue to complete the integration process. Overall, this was an essential task to ensuring all the hardware and software components work together with our microcontroller before finalizing our PCB. Figure 5.1 below shows the integration of all the hardware components on a single breadboard.</div>
+									<div class="bullet-img">
+										<img src="images/week5_integrate.jpg" style="max-width: 500px;" />
+										Figure 5.1 – Integration of hardware components for software testing
+									</div>
+									<div class="bullet-title">•&emsp;Keypad Interrupts</div>
+									<div class="bullet-p">I configured EXTI lines 4-7 to trigger an interrupt on a rising edge for the PA4-PA7 pins. Due to the issue with the keypad initialization, the interrupt testing will have to hold off until all issues are resolved. I also suspect that I’ll need to debounce the buttons once the component works properly.</div>
+									<p>For the following week, I will resolve keypad issues, test the interrupt implementation, and integrate the IMU when it is ready. Depending on the keypad results, I may also debounce the buttons to get clean input from the user. All in all, this whole process will be crucial for guaranteeing that all components can interact well together before our design is finalized.</p>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 6</h1>
+									Date: 09/30/2022<br>
+									Total hours: 15<br><br>
+									Description of design efforts:<br>
+									This week, I paused on embedded software integration and started work on gathering data from the BNO055 IMU sensor. For the purpose of streamlining the data collection process, Jehan and I pair programmed in the STM32CubeIDE.
+									<br><br>
+									<div class="bullet-title">•&emsp;IMU Data Collection</div>
+									<div class="bullet-p">To start, we copied over the code used to initialize and communicate over I2C with the LiDAR sensor. Since we are no longer using this component, we decided to reuse the connection and code with our IMU. After, we utilized the datasheet [1] to initialize the appropriate registers for fusion data collection using quaternions. In order to verify the proper registers are being set through I2C, we used the Analog Discovery 2 Oscilloscope to record the communication. This process can be shown in Figure 6.1 below.</div>
+									<div class="bullet-img">
+										<img src="images/week6_logic_analyzer.png" style="width: 900px;" />
+										Figure 6.1 – Oscilloscope reading of setting the IMU fusion mode
+									</div>
+									<div class="bullet-p">Once we were sure the registers were set up appropriately, we wrote a function to read the quaternion data. We integrated UART to debug and see the data with a USB-to-serial converter. The figure below shows this wiring.</div>
+									<div class="bullet-img">
+										<img src="images/week6_circuit.jpg" style="max-width: 700px;" />
+										Figure 6.2 – Circuit wiring with IMU, UART, & Oscilloscope for testing
+									</div>
+									<div class="bullet-p">The data successfully transferred, and we were able to see the w-axis, x-axis, y-axis, and z-axis values after constructing a string. Then, we brainstormed ways to constantly read the data efficiently. After extensive testing and failure, we discovered that the interrupt pin on the IMU could not be used for continuously reading sensor data as it becomes ready. The reason for this is due to the firmware. Our BNO055 IMU came with a firmware version of 3.11 while the interrupt functionality is only in version 3.14 or higher. Seeing as there is a lack of resources on updating this firmware, we went with an alternate option to read and send data on a timer interrupt. I integrated Timer 7 and DMA Channel 7 from Week 4 to send IMU data over UART at a rate of 100 Hz. Figure 6.3 below shows the output of this integration.</div>
+									<div class="bullet-img">
+										<img src="images/week6_data.png" style="width: 900px;" />
+										Figure 6.3 – Output of a data transfer with DMA and the timer
+									</div>
+									<p>For the following week, I will research and determine whether sensor calibration is necessary, and I will explore the idea of scaling integer data to convert it into floating-point values. As we extensively test each component, I will also be responsible for further integrating them all. Overall, this week was very productive since we successfully collected and transmitted data from our IMU, which will eventually be used to build a 3D model.</p>
+									Sources Cited<br>
+									[1] https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf<br>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 7</h1>
+									Date: 10/07/2022<br>
+									Total hours: 12<br><br>
+									Description of design efforts:<br>
+									This week, I completely reprogrammed and tested our 4x4 matrix keypad, and I tested receiving data over UART with our nano.
+									<br><br>
+									<div class="bullet-title">•&emsp;Keypad</div>
+									<div class="bullet-p">Initially, I referenced my Lab 7 from ECE 362 to understand how to debounce a keypad, and I utilized portions of my lab code to set up our implementation. Using the Timer 6 interrupt every one millisecond, each row is individually set to high (in succession). After setting a row to high, the program gets the input values of the columns and stores it in an integer. Then, it loops through the column values for the current row, and if a column value is high, it obtains the key pressed using a pre-defined 2D-array with the keypad characters. If no key is pressed, it should receive our escape character which we have defined as ‘z’. Using the USB-to-serial converter and UART, I tested the keypad input for each button. Figure 7.1 below shows the results of this test. Afterwards, the keypad was easily integrated in our project by adjusting the Timer 6 ISR to start and stop IMU data collection if the corresponding buttons are pushed. This progress is significant since the keypad will be the main interface our users will interact with to perform different functionalities.</div>
+									<div class="bullet-img">
+										<img src="images/week7_keypad_uart.png" style="max-height: 500px;" />
+										Figure 7.1 – Testing keypad input over UART
+									</div>
+									<div class="bullet-img">
+										<img src="images/week7_integrate.png" style="max-height: 500px;" />
+										Figure 7.2 – Fully integrated board with the keypad
+									</div>
+									<div class="bullet-title">•&emsp;UART with Nano</div>
+									<div class="bullet-p">I used the USB-to-serial converter to test sending IMU data over UART to the Jetson nano. After that was successful, I hooked up the appropriate wires to the RX and TX pins on the nano to test a direct connection. Figure 7.3 below shows the successful results of this test. Both tests used the terminal multiplexer Screen to view the data transfer over UART.</div>
+									<div class="bullet-img">
+										<img src="images/week7_nano_uart.png" style="max-height: 500px;" />
+										Figure 7.3 – Testing UART with nano & IMU data
+									</div>
+									<p>For the following week, I will continue working on the nano integration by learning more about implementing our own ROS nodes. I will also write a python script to read raw data from the UART serial port and write it into a file. </p>
+								</article>
+								<article class="box post">
+									<h1 style="font-size:1.2rem">Week 9</h1>
+									Date: 10/21/2022<br>
+									Total hours: 7<br><br>
+									Description of design efforts:<br>
+									This week, I looked into IMU calibration and wrote a python script to receive data over UART and manage it appropriately on the Jetson nano.
+									<br><br>
+									<div class="bullet-title">•&emsp;IMU Calibration</div>
+									<div class="bullet-p">Using the BNO055 datasheet [1], I was able to understand our IMU’s calibration. Once powered on, the IMU begins collecting data and attempting to calibrate. Therefore, all data collected before the IMU is properly calibrated should be discarded in order to not skew the data. For our implementation, we will check the system’s calibration status and only begin transferring data when this bit is set. I created a function that reads the proper IMU register through I2C, and I need to proceed with testing how long the IMU will take to start collecting calibrated data.</div>
+									<div class="bullet-title">•&emsp;Python Script for UART Data</div>
+									<div class="bullet-p">I wrote a python script to connect to the appropriate serial port (/dev/ttyTHS1) for receiving UART data, and I tested this connection by printing the data directly on the terminal. Our team decided to leave the transmitted IMU data as strings, so I set up the script to write to a text file for now. Eventually, we will use ROS nodes and messages for streamlining data collection. The figure below shows a test of data being printed on the terminal.</div>
+									<div class="bullet-img">
+										<img src="images/week7_nano_uart.png" style="max-height: 500px;" />
+										Figure 9.1 – Test printing IMU data with python script
+									</div>
+									<p>For the following week, I will finalize the IMU calibration and research ROS messages for IMU quaternion data to write publisher and subscriber nodes. This sensor data will eventually be used with our SLAM library to determine the camera pose for providing an accurate reconstruction.</p>
+									Sources Cited<br>
+									[1] https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bno055-ds000.pdf<br>
+								</article>
+							</div>
+
+					</div>
+				</div>
+
+			<!-- Footer -->
+			<section id="footer" class="wrapper">
+				<div class="title">Contact Me</div>
+				<div class="container">
+					<div class="row" style="justify-content:center;">
+						<div class="col-6 col-12-medium">
+
+							<!-- Contact -->
+							<section class="feature-list small">
+								<div class="row" style="justify-content:center;">
+									<div class="col-6 col-12-small">
+										<section>
+											<h3 class="icon solid fa-comment">Social</h3>
+											<p>
+												<a href="https://www.linkedin.com/in/kris-kunovski/">linkedin.com/in/kris-kunovski/</a><br />
+											</p>
+										</section>
+									</div>
+									<div class="col-6 col-12-small">
+										<section style="left-margin:auto;right-margin:auto;">
+											<h3 class="icon solid fa-envelope">Email</h3>
+											<p>
+												<a href="mailto:kunovski.kris@gmail.com">kunovski.kris@gmail.com</a>
+											</p>
+										</section>
+									</div>
+								</div>
+							</section>
+
+						</div>
+					</div>
+					<div id="copyright">
+						<ul>
+							<li>&copy; Kristopher Kunovski.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
